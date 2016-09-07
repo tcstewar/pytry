@@ -12,6 +12,3 @@ class Simple(pytry.Trial):
         if p.op == 'minus':
             result = p.x - p.y
         return dict(result=result)
-
-if __name__ == '__main__':
-    Simple().run(x=1, y=2)
