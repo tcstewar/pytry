@@ -82,14 +82,15 @@ class Trial(object):
                                      'a result value' % k)
             text.append('%s = %r' % (k, v))
 
-        if plt is not None and not p.hide_overlay:
-            plt.suptitle(fn + '\n' + '\n'.join(text), fontsize=8)
-            plt.figtext(0.13, 0.12, '\n'.join(self.args_text))
 
         args_text = []
         for k in self.param_defaults.keys():
             if k not in self.system_params:
                 args_text.append('%s = %r' % (k, getattr(p, k)))
+
+        if plt is not None and not p.hide_overlay:
+            plt.suptitle(p.data_filename + '\n' + '\n'.join(text), fontsize=8)
+            plt.figtext(0.13, 0.12, '\n'.join(args_text))
 
         text = args_text + text
         text = '\n'.join(text)
