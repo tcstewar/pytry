@@ -16,8 +16,8 @@ def run():
     with open(filename) as f:
         code = f.read()
     objs = dict()
-
-    exec(code, globals(), objs)
+    compiled = compile(code, filename, 'exec')
+    exec(compiled, objs)
 
     trials = []
     for x in objs.values():
