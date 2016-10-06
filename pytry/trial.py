@@ -11,6 +11,7 @@ class Params(object):
 class Trial(object):
     def __init__(self):
         self.param_defaults = {}
+        self.param_descriptions = {}
         self.system_params = []
 
         self._create_base_params()
@@ -32,6 +33,7 @@ class Trial(object):
         if k in self.param_defaults:
             raise ValueException('Cannot redefine parameter "%s"' % k)
         self.param_defaults[k] = v
+        self.param_descriptions[k] = description
         if system:
             self.system_params.append(k)
 
