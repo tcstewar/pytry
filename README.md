@@ -215,8 +215,8 @@ This also adds three new parameters:
 ```
 
  - ```backend``` allows you to run the neural model using different
-   implementations of the neural simulator (such as ```nengo_ocl``` or
-   ```nengo_spinnaker```)
+   implementations of the neural simulator (such as nengo_ocl or
+   nengo_spinnaker)
  - ```dt``` specifies the time step of the simulation
  - ```gui``` does not run the simulation.  Instead, it creates the model and
    then starts the ```nengo_gui``` interactive simulation environment, allowing
