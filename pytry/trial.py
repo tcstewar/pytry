@@ -75,6 +75,10 @@ class Trial(object):
 
         result = self.execute_trial(p, plt)
 
+        if result is None:
+            print('No results to record')
+            return
+
         text = []
         for k, v in sorted(result.items()):
             if k in self.param_defaults:
