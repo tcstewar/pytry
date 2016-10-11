@@ -38,5 +38,9 @@ class NengoTrial(trial.Trial):
             sim = Simulator(model, dt=p.dt)
             return self.evaluate(p, sim, plt)
 
+    def make_model(self, **kwargs):
+        p = self._create_parameters(**kwargs)
+        return self.model(p)
+
     def model(self, p):
         raise NotImplementedError
