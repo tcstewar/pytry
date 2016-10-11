@@ -1,6 +1,5 @@
 import os
 
-import numpy as np
 
 def read(path):
     data = []

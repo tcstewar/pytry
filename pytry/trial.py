@@ -86,7 +86,6 @@ class Trial(object):
                                      'a result value' % k)
             text.append('%s = %r' % (k, v))
 
-
         args_text = []
         for k in self.param_defaults.keys():
             if k not in self.system_params:
@@ -123,5 +122,3 @@ class Trial(object):
 
     def evaluate(self, p, plt):
         raise NotImplementedError
-
-

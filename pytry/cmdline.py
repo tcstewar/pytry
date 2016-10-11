@@ -5,7 +5,8 @@ import pytry
 
 
 def run():
-    parser = argparse.ArgumentParser(description='pytry: Run Trials with parameters')
+    parser = argparse.ArgumentParser(
+        description='pytry: Run Trials with parameters')
     parser.add_argument('filename', metavar='FILE', type=str, nargs=1,
                         help='.py file containing Trial object')
 
@@ -33,8 +34,10 @@ def run():
         trial = trials[0]()
         run_trial(trial, parser)
 
+
 def str2bool(text):
     return text.lower() in ("yes", "true", "t", "1")
+
 
 def run_trial(trial, parser):
     keys = list(trial.param_defaults.keys())
@@ -45,18 +48,18 @@ def run_trial(trial, parser):
 
         if v is False:
             parser.add_argument('--%s' % k, default=v,
-                            action='store_true',
-                            help=desc)
+                                action='store_true',
+                                help=desc)
         elif v is True:
             parser.add_argument('--%s' % k, default=v,
-                            metavar='<X>',
-                            type=str2bool,
-                            action='store',
-                            help=desc)
+                                metavar='<X>',
+                                type=str2bool,
+                                action='store',
+                                help=desc)
         else:
             parser.add_argument('--%s' % k, type=type(v), default=v,
-                            metavar='<X>', action='store',
-                            help=desc)
+                                metavar='<X>', action='store',
+                                help=desc)
 
     args = parser.parse_args()
     params = vars(args)
