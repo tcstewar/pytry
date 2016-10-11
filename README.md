@@ -176,7 +176,7 @@ suitable for use with ```nengo```, a package for producing large-scale
 neural simulations.
 
 The ```pytry.NengoTrial``` class introduces new parameters and separates
-```evaluate``` into two stages (makeing the model and running the model).
+```evaluate``` into two stages (making the model and running the model).
 This works as follows:
 
 ```python
@@ -221,3 +221,4 @@ This also adds three new parameters:
  - ```gui``` does not run the simulation; rather, it creates the model and
    then starts the ```nengo_gui``` interactive simulation environment, allowing
    you to directly interact with the model.
+
