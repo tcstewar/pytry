@@ -218,7 +218,9 @@ This also adds three new parameters:
    implementations of the neural simulator (such as ```nengo_ocl``` or
    ```nengo_spinnaker```)
  - ```dt``` specifies the time step of the simulation
- - ```gui``` does not run the simulation; rather, it creates the model and
+ - ```gui``` does not run the simulation.  Instead, it creates the model and
    then starts the ```nengo_gui``` interactive simulation environment, allowing
    you to directly interact with the model.
 
+Other than that, the ```NengoTrial``` objects function the same as normal
+```Trial``` objects.
