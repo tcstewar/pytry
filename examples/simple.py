@@ -6,7 +6,7 @@ class Simple(pytry.Trial):
         self.param('second number', y=1)
         self.param('operation to compute', op='plus')
 
-    def evaluate(self, p, plt):
+    def evaluate(self, p):
         if p.op == 'plus':
             result = p.x + p.y
         if p.op == 'minus':

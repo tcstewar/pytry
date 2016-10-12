@@ -4,10 +4,10 @@ import importlib
 import logging
 import sys
 
-from . import trial
+from . import plot
 
 
-class NengoTrial(trial.Trial):
+class NengoTrial(plot.PlotTrial):
     def _create_base_params(self):
         super(NengoTrial, self)._create_base_params()
         self.param('nengo backend to use', backend='nengo')
@@ -15,7 +15,7 @@ class NengoTrial(trial.Trial):
         self.param('run in nengo GUI', gui=False, system=True)
         self.param('enable debug messages', debug=False, system=True)
 
-    def execute_trial(self, p, plt):
+    def execute_trial(self, p):
         if p.debug:
             logging.basicConfig(level=logging.DEBUG)
 
@@ -35,8 +35,11 @@ class NengoTrial(trial.Trial):
             module = importlib.import_module(p.backend)
             Simulator = module.Simulator
 
-            sim = Simulator(model, dt=p.dt)
-            return self.evaluate(p, sim, plt)
+            self.sim = Simulator(model, dt=p.dt)
+            return super(NengoTrial, self).execute_trial(p)
+
+    def do_evaluate(self, p):
+        return self.evaluate(p, self.sim, self.plt)
 
     def make_model(self, **kwargs):
         p = self._create_parameters(**kwargs)
