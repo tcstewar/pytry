@@ -28,7 +28,7 @@ class MyModel(pytry.Trial):
     def params(self):
         self.param('the first parameter', a=3)
         self.param('the second parameter', b=7)
-    def evaluate(self, p, plt):
+    def evaluate(self, p):
         model = create_my_large_model(a=p.a, b=p.b)
         data = model.run()
         return dict(
@@ -63,8 +63,7 @@ of the model.  For example, for the model above you will see:
 
 ```
 usage: pytry [-h] [--a <X>] [--b <X>] [--seed <X>] [--data_dir <X>]
-             [--data_filename <X>] [--hide_overlay] [--save_figs]
-             [--show_figs] [--verbose <X>]
+             [--data_filename <X>] [--verbose <X>]
              FILE
 
 pytry: Run Trials with parameters
@@ -79,9 +78,6 @@ optional arguments:
   --seed <X>           random number seed (default=1)
   --data_dir <X>       data directory (default='data')
   --data_filename <X>  filename for data (default=None)
-  --hide_overlay       hide overlay on figures (default=False)
-  --save_figs          save figures (default=False)
-  --show_figs          display figures (default=False)
   --verbose <X>        print progress information (default=True)
 ```
 
@@ -96,10 +92,6 @@ defined, but the other parameters are automatically generated.  They are:
  - ```data_filename```, the filename to use for this trial.  If it is not
    set, it defaults to ```<ModelName>#<timestamp>-<UUID>```.
  - ```verbose```, whether information will be printed to the screen
- - ```show_figs```, whether to use matplotlib to plot some data as well
- - ```save_figs```, whether those plots should be saved
- - ```hide_overlay```, whether the plots should have the parameter values
-   written on them as well
 
 All of these parameters are also available when running from a script.  For
 example, you can do:
@@ -118,6 +110,7 @@ model will create files like this:
 a = 3
 b = 7
 seed = 1
+
 average_value = 3.4240799645298909
 final_value = 7.8862242385055321
 ```
@@ -139,14 +132,28 @@ df = pandas.DataFrame(pytry.read('data'))
 
 ## Plotting data
 
-If you specify either the ```show_figs``` or ```save_figs``` parameters,
-the ```evaluate``` function will get a ```plt``` argument passed into it
-(otherwise this value will be None).  This is for generating plots that
-may be of use.  The object passed in is ```matplotlib.pyplot```, allowing
-all the standard ```matplotlib``` plotting commands:
+You may want to generate plots in addition to the raw results from running
+the trial.  To do this, use ```pytry.PlotTrial``` rather than
+ ```pytry.Trial```.  This adds three new parameters:
+
+```
+  --show_figs          display figures (default=False)
+  --save_figs          save figures (default=False)
+  --hide_overlay       hide overlay on figures (default=False)
+```
+
+ - ```show_figs```, whether to show the plot on the screen
+ - ```save_figs```, whether those plots should be saved to a file
+ - ```hide_overlay```, whether the plots should have the parameter values
+   and results written on them as well
+
+When using the ```pytry.PlotTrial```, the ```evaluate``` function will get
+a ```plt``` argument passed into it.  This will be the ```matplotlib.pyplot```
+object (or ```None``` if neither the ```show_figs``` nor ```save_figs```
+parameters are set).  
 
 ```python
-class MyModel(pytry.Trial):
+class MyModel(pytry.PlotTrial):
     def params(self):
         self.param('the first parameter', a=3)
         self.param('the second parameter', b=7)
@@ -168,7 +175,7 @@ If ```show_figs``` is set, this plot will be shown on the screen.  If
 data directory.  These parameters are dependent on ```matplotlib``` being
 installed.
 
-## Custom Trial types
+## Custom Trial type: NengoTrial
 
 By subclassing ```pytry.Trial``` you can make customized ```Trial```s for
 different circumstances.  ```pytry``` has one of these built-in that is
@@ -206,7 +213,8 @@ class NengoSimple(pytry.NengoTrial):
         return dict(rmse=rmse)
 ```
 
-This also adds three new parameters:
+This also adds three new parameters (in addition to the three introduced
+by ```pytry.PlotTrial```:
 
 ```
   --backend <X>        nengo backend to use (default='nengo')
@@ -221,6 +229,3 @@ This also adds three new parameters:
  - ```gui``` does not run the simulation.  Instead, it creates the model and
    then starts the ```nengo_gui``` interactive simulation environment, allowing
    you to directly interact with the model.
-
-Other than that, the ```NengoTrial``` objects function the same as normal
-```Trial``` objects.
