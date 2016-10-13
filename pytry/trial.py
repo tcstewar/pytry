@@ -3,6 +3,8 @@ import random
 import time
 import uuid
 
+from . import write
+
 
 class Params(object):
     pass
@@ -20,6 +22,7 @@ class Trial(object):
     def _create_base_params(self):
         self.param('data directory', data_dir='data', system=True)
         self.param('filename for data', data_filename=None, system=True)
+        self.param('data file format [txt]', data_format='txt', system=True)
         self.param('print progress information', verbose=True, system=True)
         self.param('random number seed', seed=1)
 
@@ -60,9 +63,6 @@ class Trial(object):
     def generate_result_text(self, result):
         text = []
         for k, v in sorted(result.items()):
-            if k in self.param_defaults:
-                raise AttributeError('"%s" cannot be both a parameter and '
-                                     'a result value' % k)
             text.append('%s = %r' % (k, v))
         return '\n'.join(text)
 
@@ -88,17 +88,18 @@ class Trial(object):
             print('No results to record')
             return
 
-        param_text = self.generate_param_text(p)
-        result_text = self.generate_result_text(result)
-
-        text = '%s\n\n%s' % (param_text, result_text)
+        for k in result.keys():
+            if k in self.param_defaults:
+                raise AttributeError('"%s" cannot be both a parameter and '
+                                     'a result value' % k)
 
         fn = os.path.join(p.data_dir, p.data_filename)
+        write.write(self, fn, p, result)
 
-        with open(fn + '.txt', 'w') as f:
-            f.write(text)
         if p.verbose:
-            print(text)
+            print(self.generate_param_text(p))
+            print()
+            print(self.generate_result_text(result))
 
         return result
 
