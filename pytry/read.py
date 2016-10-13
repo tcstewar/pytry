@@ -20,8 +20,16 @@ def text(fn):
     with open(fn) as f:
         text = f.read()
     d = {}
+    try:
+        import numpy
+        d['array'] = numpy.array
+    except ImportError:
+        numpy = None
     exec(text, d)
     del d['__builtins__']
+    if numpy is not None:
+        if d['array'] is numpy.array:
+            del d['array']
     return d
 
 

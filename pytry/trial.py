@@ -98,7 +98,7 @@ class Trial(object):
 
         if p.verbose:
             print(self.generate_param_text(p))
-            print()
+            print('')
             print(self.generate_result_text(result))
 
         return result
