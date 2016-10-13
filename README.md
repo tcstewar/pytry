@@ -102,9 +102,9 @@ MyModel().run(a=3, b=5, seed=2, verbose=False)
 
 ## Recorded data files
 
-Each trial is saved as a separate file in a simple text format, including both
-the parameter settings and the evaluation results.  For example, the above
-model will create files like this:
+Each trial is saved as a separate file.  By default, it uses a simple text
+format, including both the parameter settings and the evaluation results.
+For example, the above model will create files like this:
 
 ```
 a = 3
@@ -114,6 +114,11 @@ seed = 1
 average_value = 3.4240799645298909
 final_value = 7.8862242385055321
 ```
+
+You can change the save format using the ```data_format``` option.  The
+currently known formats are ```txt``` (the default text format) and
+```npz``` (the numpy ```savez``` format).
+
 
 You can also load all the data from all the trials in a directory:
 
