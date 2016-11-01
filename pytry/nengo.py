@@ -25,10 +25,11 @@ class NengoTrial(plot.PlotTrial):
             raise ValueError('model() must return a nengo.Network')
 
         if p.gui:
+            locals_dict = getattr(self, 'locals', dict(model=model))
             import nengo_gui
             nengo_gui.GUI(model=model,
                           filename=sys.argv[1],
-                          locals=dict(model=model),
+                          locals=locals_dict,
                           editor=False,
                           ).start()
         else:
