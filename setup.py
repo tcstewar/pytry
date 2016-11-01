@@ -5,7 +5,8 @@ setup(
     packages=['pytry'],
     version='0.9.0',
     entry_points=dict(
-        console_scripts=['pytry = pytry.cmdline:run'],
+        console_scripts=['pytry = pytry.cmdline:run',
+                         'pytry-many = pytry.many:run_many'],
         ),
     author='Terry Stewart',
     description='Running trials with parameter variation',
