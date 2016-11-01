@@ -23,6 +23,7 @@ def text(fn):
     try:
         import numpy
         d['array'] = numpy.array
+        d['nan'] = numpy.nan
     except ImportError:
         numpy = None
     exec(text, d)
