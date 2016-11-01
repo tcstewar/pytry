@@ -10,7 +10,11 @@ def execute(cmd, checked=None):
     else:
         c = cmd.pop(0)
         if c.startswith('[') and c.endswith(']'):
-            opts = c[1:-1].split('~')
+            if ':' in c:
+                start, end = c[1:-1].split(':', 1)
+                opts = ['%d' % x for x in range(int(start), int(end))]
+            else:
+                opts = c[1:-1].split('~')
             for opt in opts:
                 execute(list(cmd), checked + [opt])
         else:
