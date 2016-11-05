@@ -4,6 +4,7 @@ import time
 import uuid
 
 from . import write
+from . import parser
 
 
 class Params(object):
@@ -22,7 +23,8 @@ class Trial(object):
     def _create_base_params(self):
         self.param('data directory', data_dir='data', system=True)
         self.param('filename for data', data_filename=None, system=True)
-        self.param('data file format [txt,npz]', data_format='txt', system=True)
+        self.param('data file format [txt,npz]',
+                   data_format='txt', system=True)
         self.param('print progress information', verbose=True, system=True)
         self.param('random number seed', seed=1)
 
@@ -107,6 +109,9 @@ class Trial(object):
 
     def execute_trial(self, p):
         return self.do_evaluate(p)
+
+    def parse_args(self, args=None):
+        return parser.parse_args(self, args)
 
     def params(self):
         raise NotImplementedError
