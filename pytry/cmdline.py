@@ -1,3 +1,4 @@
+from __future__ import print_function
 import argparse
 import sys
 
@@ -27,9 +28,9 @@ def run():
                 trials.append(x)
 
     if len(trials) == 0:
-        print 'Error: no pytry.Trial class found in %s' % filename
+        print('Error: no pytry.Trial class found in %s' % filename)
     elif len(trials) > 1:
-        print 'Error: more than one pytry.Trial class found'
+        print('Error: more than one pytry.Trial class found')
     else:
         trial = trials[0]()
         run_trial(trial, parser)
