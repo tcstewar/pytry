@@ -16,7 +16,7 @@ def run():
 
     with open(filename) as f:
         code = f.read()
-    objs = dict()
+    objs = dict(__file__ = filename)
     compiled = compile(code, filename, 'exec')
     exec(compiled, objs)
 
