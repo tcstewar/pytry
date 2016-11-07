@@ -2,6 +2,7 @@ import pytest
 
 import pytry
 
+
 class DummyTrial(pytry.Trial):
     def params(self):
         self.param('a', a=0)
@@ -9,8 +10,10 @@ class DummyTrial(pytry.Trial):
         self.param('c', c='')
         self.param('d', d=True)
         self.param('e', e=False)
+
     def evaluate(self, p):
         return {}
+
 
 def test_parse_valid():
     t = DummyTrial()
@@ -19,21 +22,23 @@ def test_parse_valid():
     assert p['a'] == 1
     assert p['b'] == 0.5
     assert p['c'] == 'hi'
-    assert p['d'] == False
-    assert p['e'] == True
+    assert p['d'] is False
+    assert p['e'] is True
 
     p = t.parse_args([])
     assert p['a'] == 0
     assert p['b'] == 0.0
     assert p['c'] == ''
-    assert p['d'] == True
-    assert p['e'] == False
+    assert p['d'] is True
+    assert p['e'] is False
+
 
 def test_parse_unknown_param():
     t = DummyTrial()
 
     with pytest.raises(SystemExit):
-        t.parse_args('--x 1')
+        t.parse_args('--x 1'.split())
+
 
 def test_parse_invalid_value():
     t = DummyTrial()
