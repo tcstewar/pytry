@@ -40,4 +40,6 @@ def npz(fn):
     f = np.load(fn)
     for k in f.files:
         d[k] = f[k]
+        if d[k].shape == ():
+            d[k] = np.asscalar(d[k])
     return d
