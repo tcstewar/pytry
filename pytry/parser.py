@@ -25,9 +25,18 @@ def parse_args(trial, args, allow_filename=False):
         desc = '%s (default=%r)' % (trial.param_descriptions[k], v)
 
         if v is False:
-            parser.add_argument('--%s' % k, default=v,
-                                action='store_true',
-                                help=desc)
+            if k in trial.system_params:
+                parser.add_argument('--%s' % k, default=v,
+                                    action='store_true',
+                                    help=desc)
+            else:
+                parser.add_argument('--%s' % k, default=v,
+                                    nargs='?',
+                                    const=True,
+                                    metavar='<X>',
+                                    type=str2bool,
+                                    action='store',
+                                    help=desc)
         elif v is True:
             parser.add_argument('--%s' % k, default=v,
                                 metavar='<X>',

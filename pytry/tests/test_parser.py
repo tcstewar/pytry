@@ -25,6 +25,13 @@ def test_parse_valid():
     assert p['d'] is False
     assert p['e'] is True
 
+    p = t.parse_args('--a 1 --b 0.5 --c hi --d False --e True'.split())
+    assert p['a'] == 1
+    assert p['b'] == 0.5
+    assert p['c'] == 'hi'
+    assert p['d'] is False
+    assert p['e'] is True
+
     p = t.parse_args([])
     assert p['a'] == 0
     assert p['b'] == 0.0
