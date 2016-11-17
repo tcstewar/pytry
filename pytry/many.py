@@ -29,7 +29,7 @@ def run_many():
 
     cmd = sys.argv[1:]
 
-    if os.path.exists(sys.argv[1]) and sys.argv.endswith('.py'):
+    if os.path.exists(sys.argv[1]) and sys.argv[1].endswith('.py'):
         cmd = ['pytry'] + cmd
 
     execute(cmd)
