@@ -30,10 +30,10 @@ class Trial(object):
 
     def param(self, description, system=False, **kwarg):
         if len(kwarg) != 1:
-            raise ValueException('Must specify exactly one parameter')
+            raise ValueError('Must specify exactly one parameter')
         k, v = list(kwarg.items())[0]
         if k in self.param_defaults:
-            raise ValueException('Cannot redefine parameter "%s"' % k)
+            raise ValueError('Cannot redefine parameter "%s"' % k)
         self.param_defaults[k] = v
         self.param_descriptions[k] = description
         if system:
