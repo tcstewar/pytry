@@ -27,11 +27,20 @@ class NengoTrial(plot.PlotTrial):
         if p.gui:
             locals_dict = getattr(self, 'locals', dict(model=model))
             import nengo_gui
-            nengo_gui.GUI(model=model,
-                          filename=sys.argv[1],
-                          locals=locals_dict,
-                          editor=False,
-                          ).start()
+            try:
+                nengo_gui.GUI(model=model,
+                              filename=sys.argv[1],
+                              locals=locals_dict,
+                              editor=False,
+                              ).start()
+            except TypeError:
+                # support nengo_gui v0.2.0 and previous
+                nengo_gui.GUI(model=model,
+                              filename=sys.argv[1],
+                              locals=locals_dict,
+                              interactive=False,
+                              allow_file_change=False,
+                              ).start()
         else:
             module = importlib.import_module(p.backend)
             Simulator = module.Simulator
