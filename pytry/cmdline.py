@@ -5,19 +5,10 @@ from . import parser
 from . import trial
 
 
-def run():
-    parser1 = argparse.ArgumentParser(
-        description='pytry: Run Trials with parameters')
-    parser1.add_argument('filename', metavar='FILE', type=str, nargs=1,
-                         help='.py file containing Trial object')
-
-    if len(sys.argv) < 2:
-        parser1.parse_args()   # this will fail with an error message
-    filename = sys.argv[1]
-
+def get_trial_class(filename):
     with open(filename) as f:
         code = f.read()
-    objs = dict(__file__=filename)
+    objs = dict(__file__=filename, __name__='__pytry__')
     compiled = compile(code, filename, 'exec')
     exec(compiled, objs)
 
@@ -32,6 +23,22 @@ def run():
     elif len(trials) > 1:
         print('Error: more than one pytry.Trial class found')
     else:
-        t = trials[0]()
+        return trials[0]
+
+
+def run():
+    parser1 = argparse.ArgumentParser(
+        description='pytry: Run Trials with parameters')
+    parser1.add_argument('filename', metavar='FILE', type=str, nargs=1,
+                         help='.py file containing Trial object')
+
+    if len(sys.argv) < 2:
+        parser1.parse_args()   # this will fail with an error message
+    filename = sys.argv[1]
+
+    trial = get_trial_class(filename)
+
+    if trial is not None:
+        t = trial()
         args = parser.parse_args(t, args=None, allow_filename=True)
         t.run(**args)
