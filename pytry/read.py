@@ -31,6 +31,8 @@ def text(fn):
     if numpy is not None:
         if d['array'] is numpy.array:
             del d['array']
+        if d['nan'] is numpy.nan:
+            del d['nan']
     return d
 
 
