@@ -46,7 +46,8 @@ class NengoTrial(plot.PlotTrial):
             Simulator = module.Simulator
 
             self.sim = Simulator(model, dt=p.dt)
-            return super(NengoTrial, self).execute_trial(p)
+            with self.sim:
+                return super(NengoTrial, self).execute_trial(p)
 
     def do_evaluate(self, p):
         return self.evaluate(p, self.sim, self.plt)
