@@ -142,19 +142,19 @@ the trial.  To do this, use ```pytry.PlotTrial``` rather than
  ```pytry.Trial```.  This adds three new parameters:
 
 ```
-  --show_figs          display figures (default=False)
-  --save_figs          save figures (default=False)
-  --hide_overlay       hide overlay on figures (default=False)
+  --plt                display plot (default=False)
+  --plt_save           save plot (default=False)
+  --plt_overlay        show overlay on figures (default=False)
 ```
 
- - ```show_figs```, whether to show the plot on the screen
- - ```save_figs```, whether those plots should be saved to a file
- - ```hide_overlay```, whether the plots should have the parameter values
+ - ```plt```, whether to show the plot on the screen
+ - ```plt_save```, whether those plots should be saved to a file
+ - ```plt_overlay```, whether the plots should have the parameter values
    and results written on them as well
 
 When using the ```pytry.PlotTrial```, the ```evaluate``` function will get
 a ```plt``` argument passed into it.  This will be the ```matplotlib.pyplot```
-object (or ```None``` if neither the ```show_figs``` nor ```save_figs```
+object (or ```None``` if neither the ```plt``` nor ```plt_save```
 parameters are set).  
 
 ```python
@@ -175,8 +175,8 @@ class MyModel(pytry.PlotTrial):
             )
 ```
 
-If ```show_figs``` is set, this plot will be shown on the screen.  If
-```save_figs``` is set, this plot will be saved as a ```.png``` file in the
+If ```plt``` is set, this plot will be shown on the screen.  If
+```plt_save``` is set, this plot will be saved as a ```.png``` file in the
 data directory.  These parameters are dependent on ```matplotlib``` being
 installed.
 
