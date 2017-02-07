@@ -42,8 +42,13 @@ class NengoTrial(plot.PlotTrial):
                               allow_file_change=False,
                               ).start()
         else:
-            module = importlib.import_module(p.backend)
-            Simulator = module.Simulator
+            if ':' in p.backend:
+                backend, clsname = p.backend.split(':', 1)
+            else:
+                backend = p.backend
+                clsname = 'Simulator'
+            module = importlib.import_module(backend)
+            Simulator = getattr(module, clsname)
 
             self.sim = Simulator(model, dt=p.dt)
             with self.sim:
