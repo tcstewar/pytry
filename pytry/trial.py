@@ -118,3 +118,20 @@ class Trial(object):
 
     def evaluate(self, p, plt):
         raise NotImplementedError
+
+    def show_params(self):
+        r = []
+        params = sorted(self.param_defaults.keys())
+        params.sort(key = lambda p: p in self.system_params)
+
+        max_len = max([len(p) for p in params])
+
+
+        for p in params:
+            default = self.param_defaults[p]
+            desc = self.param_descriptions[p]
+
+            param = ('%%%ds' % max_len) % p
+            r.append('%s: %s (default=%r)' % (param, desc, default))
+        return '\n'.join(r)
+
