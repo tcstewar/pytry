@@ -14,6 +14,7 @@ class NengoTrial(plot.PlotTrial):
         self.param('nengo timestep', dt=0.001)
         self.param('run in nengo GUI', gui=False, system=True)
         self.param('enable debug messages', debug=False, system=True)
+        self.param('neuron type', neuron_type='default')
 
     def execute_trial(self, p):
         if p.debug:
@@ -23,6 +24,18 @@ class NengoTrial(plot.PlotTrial):
         import nengo
         if not isinstance(model, nengo.Network):
             raise ValueError('model() must return a nengo.Network')
+
+        if p.neuron_type != 'default':
+            if isinstance(p.neuron_type, basestring):
+                neuron_type = eval(p.neuron_type)
+            else:
+                neuron_type = p.neuron_type
+
+            if not isinstance(neuron_type, nengo.neurons.NeuronType):
+                raise AttributeError('%s is not a NeuronType' % p.neuron_type)
+
+            for ens in model.all_ensembles:
+                ens.neuron_type = neuron_type
 
         if p.gui:
             locals_dict = getattr(self, 'locals', dict(model=model))
