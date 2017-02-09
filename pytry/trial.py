@@ -74,8 +74,9 @@ class Trial(object):
         if p.verbose:
             print('running %s' % p.data_filename)
 
-        if not os.path.exists(p.data_dir):
-            os.mkdir(p.data_dir)
+        if p.data_dir is not None and p.data_dir != '':
+            if not os.path.exists(p.data_dir):
+                os.mkdir(p.data_dir)
 
         try:
             import numpy
@@ -95,8 +96,9 @@ class Trial(object):
                 raise AttributeError('"%s" cannot be both a parameter and '
                                      'a result value' % k)
 
-        fn = os.path.join(p.data_dir, p.data_filename)
-        write.write(self, fn, p, result)
+        if p.data_dir is not None and p.data_dir != '':
+            fn = os.path.join(p.data_dir, p.data_filename)
+            write.write(self, fn, p, result)
 
         if p.verbose:
             print(self.generate_param_text(p))
@@ -122,10 +124,9 @@ class Trial(object):
     def show_params(self):
         r = []
         params = sorted(self.param_defaults.keys())
-        params.sort(key = lambda p: p in self.system_params)
+        params.sort(key=lambda p: p in self.system_params)
 
         max_len = max([len(p) for p in params])
-
 
         for p in params:
             default = self.param_defaults[p]
@@ -134,4 +135,3 @@ class Trial(object):
             param = ('%%%ds' % max_len) % p
             r.append('%s: %s (default=%r)' % (param, desc, default))
         return '\n'.join(r)
-
