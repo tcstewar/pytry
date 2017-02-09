@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import inspect
 import importlib
 import logging
 import sys
@@ -63,7 +64,12 @@ class NengoTrial(plot.PlotTrial):
             module = importlib.import_module(backend)
             Simulator = getattr(module, clsname)
 
-            self.sim = Simulator(model, dt=p.dt)
+            args = inspect.getargspec(Simulator.__init__)[0]
+            if (not p.verbose and 'progress_bar' in args):
+                    self.sim = Simulator(model, dt=p.dt, progress_bar=False)
+            else:
+                self.sim = Simulator(model, dt=p.dt)
+
             with self.sim:
                 return super(NengoTrial, self).execute_trial(p)
 
