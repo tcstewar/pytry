@@ -7,6 +7,11 @@ import sys
 
 from . import plot
 
+try:
+    basestring         # For Python 2 compatibility
+except NameError:
+    basestring = str   # For Python 3 compatibility
+
 
 class NengoTrial(plot.PlotTrial):
     def _create_base_params(self):
