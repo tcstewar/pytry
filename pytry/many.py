@@ -1,12 +1,17 @@
 import sys
 import os
 
+# Imoprt shlex.quote when using Python 3, pipes.quote when using Python 2
+try:
+    from shlex import quote
+except ImportError:
+    from pipes import quote
 
 def execute(cmd, checked=None):
     if checked is None:
         checked = []
     if len(cmd) == 0:
-        os.system(' '.join(checked))
+        os.system(' '.join(map(quote, checked)))
     else:
         c = cmd.pop(0)
         if c.startswith('[') and c.endswith(']'):
