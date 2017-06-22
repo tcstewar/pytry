@@ -57,12 +57,12 @@ def test_save_npz():
         values[k] = f[k]
     assert values['a'].dtype.kind == 'i'
     assert values['b'].dtype.kind == 'f'
-    assert values['c'].dtype.kind == 'S'
+    assert values['c'].dtype.kind == 'S' or values['c'].dtype.kind == 'U'
     assert values['d'].dtype.kind == 'b'
     assert values['e'].dtype.kind == 'b'
     assert values['aa'].dtype.kind == 'i'
     assert values['bb'].dtype.kind == 'f'
-    assert values['cc'].dtype.kind == 'S'
+    assert values['cc'].dtype.kind == 'S' or values['cc'].dtype.kind == 'U'
     assert values['dd'].dtype.kind == 'b'
     assert values['ee'].dtype.kind == 'b'
 
