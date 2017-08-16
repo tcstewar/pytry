@@ -61,19 +61,26 @@ class NengoTrial(plot.PlotTrial):
                               allow_file_change=False,
                               ).start()
         else:
-            if ':' in p.backend:
-                backend, clsname = p.backend.split(':', 1)
+            backend = p.backend
+
+            extra_args = {}
+            if backend.endswith(')') and '(' in backend:
+                backend, arg_text = backend[:-1].split('(', 1)
+                extra_args = eval('dict(%s)' % arg_text)
+
+            if ':' in backend:
+                backend, clsname = backend.split(':', 1)
             else:
-                backend = p.backend
                 clsname = 'Simulator'
             module = importlib.import_module(backend)
             Simulator = getattr(module, clsname)
 
             args = inspect.getargspec(Simulator.__init__)[0]
             if (not p.verbose and 'progress_bar' in args):
-                    self.sim = Simulator(model, dt=p.dt, progress_bar=False)
+                    self.sim = Simulator(model, dt=p.dt, progress_bar=False,
+                                         **extra_args)
             else:
-                self.sim = Simulator(model, dt=p.dt)
+                self.sim = Simulator(model, dt=p.dt, **extra_args)
 
             with self.sim:
                 return super(NengoTrial, self).execute_trial(p)
