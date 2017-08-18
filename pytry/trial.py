@@ -22,7 +22,7 @@ class Trial(object):
 
     def _create_base_params(self):
         self.param('data directory', data_dir='data', system=True)
-        self.param('filename for data', data_filename=None, system=True)
+        self.param('filename for data', data_filename='', system=True)
         self.param('data file format [txt,npz]',
                    data_format='txt', system=True)
         self.param('print progress information', verbose=True, system=True)
@@ -47,7 +47,7 @@ class Trial(object):
             if k not in self.param_defaults:
                 raise AttributeError('Unknown parameter: "%s"' % k)
             setattr(p, k, v)
-        if p.data_filename is None:
+        if p.data_filename == '':
             uid = uuid.uuid4().fields[0]
             name = self.__class__.__name__
             p.data_filename = '%s#%s-%s' % (name,
