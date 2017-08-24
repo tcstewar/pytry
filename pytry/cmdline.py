@@ -29,7 +29,7 @@ def get_trial_class(filename):
 def run():
     parser1 = argparse.ArgumentParser(
         description='pytry: Run Trials with parameters')
-    parser1.add_argument('filename', metavar='FILE', type=str, nargs=1,
+    parser1.add_argument('_trial_filename', metavar='FILE', type=str, nargs=1,
                          help='.py file containing Trial object')
 
     if len(sys.argv) < 2:

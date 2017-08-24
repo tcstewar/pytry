@@ -15,7 +15,8 @@ def parse_args(trial, args, allow_filename=False):
         description='pytry: Run Trials with parameters')
 
     if allow_filename:
-        parser.add_argument('filename', metavar='FILE', type=str, nargs=1,
+        parser.add_argument('_trial_filename', metavar='FILE',
+                            type=str, nargs=1,
                             help='.py file containing Trial object')
 
     keys = list(trial.param_defaults.keys())
@@ -51,5 +52,5 @@ def parse_args(trial, args, allow_filename=False):
     args = parser.parse_args(args)
     params = vars(args)
     if allow_filename:
-        del params['filename']
+        del params['_trial_filename']
     return params
