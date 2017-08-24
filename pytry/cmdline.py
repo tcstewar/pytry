@@ -32,7 +32,7 @@ def run():
     parser1.add_argument('_trial_filename', metavar='FILE', type=str, nargs=1,
                          help='.py file containing Trial object')
 
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or sys.argv[1].startswith('-'):
         parser1.parse_args()   # this will fail with an error message
     filename = sys.argv[1]
 
