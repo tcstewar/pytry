@@ -75,10 +75,13 @@ class NengoTrial(plot.PlotTrial):
             module = importlib.import_module(backend)
             Simulator = getattr(module, clsname)
 
-            args = inspect.getargspec(Simulator.__init__)[0]
+            try:
+                args = inspect.getargspec(Simulator.__init__)[0]
+            except:
+                args = []
             if (not p.verbose and 'progress_bar' in args):
-                    self.sim = Simulator(model, dt=p.dt, progress_bar=False,
-                                         **extra_args)
+                self.sim = Simulator(model, dt=p.dt, progress_bar=False,
+                                     **extra_args)
             else:
                 self.sim = Simulator(model, dt=p.dt, **extra_args)
 
