@@ -46,20 +46,46 @@ class NengoTrial(plot.PlotTrial):
         if p.gui:
             locals_dict = getattr(self, 'locals', dict(model=model))
             import nengo_gui
-            try:
-                nengo_gui.GUI(model=model,
-                              filename=sys.argv[1],
-                              locals=locals_dict,
-                              editor=False,
-                              ).start()
-            except TypeError:
-                # support nengo_gui v0.2.0 and previous
-                nengo_gui.GUI(model=model,
-                              filename=sys.argv[1],
-                              locals=locals_dict,
-                              interactive=False,
-                              allow_file_change=False,
-                              ).start()
+            import webbrowser
+
+            if hasattr(nengo_gui, 'guibackend'):
+                host = 'localhost'
+                port = 8080
+                server_settings = nengo_gui.guibackend.GuiServerSettings((host, port))
+                model_context = nengo_gui.guibackend.ModelContext(
+                                    model=model,
+                                    locals=locals_dict,
+                                    filename=sys.argv[1],
+                                    writeable=False)
+                page_settings = nengo_gui.page.PageSettings(
+                                    filename_cfg=sys.argv[1] + '.cfg',
+                                    backend=p.backend,
+                                    editor_class=nengo_gui.components.editor.NoEditor)
+                server = nengo_gui.gui.BaseGUI(
+                                    model_context, server_settings, page_settings)
+                if hasattr(server.server, 'gen_one_time_token'):
+                    wb = webbrowser.get().open('%s://%s:%d/?token=%s' % (
+                                        'http', host, port, server.server.gen_one_time_token()))
+                else:
+                    wb = webbrowser.get().open('%s://%s:%d/' % (
+                                        'http', host, port))
+
+                server.start()
+            else:
+                try:
+                    nengo_gui.GUI(model=model,
+                                  filename=sys.argv[1],
+                                  locals=locals_dict,
+                                  editor=False,
+                                  ).start()
+                except TypeError:
+                    # support nengo_gui v0.2.0 and previous
+                    nengo_gui.GUI(model=model,
+                                  filename=sys.argv[1],
+                                  locals=locals_dict,
+                                  interactive=False,
+                                  allow_file_change=False,
+                                  ).start()
         else:
             backend = p.backend
 
