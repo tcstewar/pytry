@@ -12,9 +12,12 @@ class PlotTrial(trial.Trial):
 
     def execute_trial(self, p):
         if p.plt or p.plt_save:
-            import matplotlib.pyplot
-            self.plt = matplotlib.pyplot
-            self.plt.figure()
+            if isinstance(p.plt, bool):
+                import matplotlib.pyplot
+                self.plt = matplotlib.pyplot
+                self.plt.figure()
+            else:
+                self.plt = p.plt
         else:
             self.plt = None
 
@@ -36,7 +39,7 @@ class PlotTrial(trial.Trial):
             fn = os.path.join(p.data_dir, p.data_filename)
             self.plt.savefig(fn + '.png', dpi=300)
 
-        if p.plt:
+        if p.plt is True:
             self.plt.show()
 
         return result
