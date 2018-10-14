@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='pytry',
     packages=['pytry'],
-    version='0.9.1',
+    version='0.9.2',
     entry_points=dict(
         console_scripts=['pytry = pytry.cmdline:run',
                          'pytry-many = pytry.many:run_many'],
