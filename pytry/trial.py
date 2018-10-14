@@ -16,6 +16,7 @@ class Trial(object):
         self.param_defaults = {}
         self.param_descriptions = {}
         self.system_params = []
+        self.hidden_params = []
 
         self._create_base_params()
         self.params()
@@ -28,7 +29,7 @@ class Trial(object):
         self.param('print progress information', verbose=True, system=True)
         self.param('random number seed', seed=1)
 
-    def param(self, description, system=False, **kwarg):
+    def param(self, description, system=False, hidden=False, **kwarg):
         if len(kwarg) != 1:
             raise ValueError('Must specify exactly one parameter')
         k, v = list(kwarg.items())[0]
@@ -38,6 +39,8 @@ class Trial(object):
         self.param_descriptions[k] = description
         if system:
             self.system_params.append(k)
+        if hidden:
+            self.hidden_params.append(k)
 
     def _create_parameters(self, **kwargs):
         p = Params()
@@ -58,7 +61,7 @@ class Trial(object):
     def generate_param_text(self, p):
         args_text = []
         for k in self.param_defaults.keys():
-            if k not in self.system_params:
+            if k not in self.system_params + self.hidden_params:
                 args_text.append('%s = %r' % (k, getattr(p, k)))
         return '\n'.join(args_text)
 
@@ -129,6 +132,8 @@ class Trial(object):
         max_len = max([len(p) for p in params])
 
         for p in params:
+            if p in self.hidden_params:
+                continue
             default = self.param_defaults[p]
             desc = self.param_descriptions[p]
 

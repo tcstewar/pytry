@@ -24,6 +24,8 @@ def parse_args(trial, args, allow_filename=False):
     for k in sorted(keys, key=lambda x: (x in trial.system_params, x)):
         v = trial.param_defaults[k]
         desc = '%s (default=%r)' % (trial.param_descriptions[k], v)
+        if k in trial.hidden_params:
+            desc = argparse.SUPPRESS
 
         if v is False:
             if k in trial.system_params:
